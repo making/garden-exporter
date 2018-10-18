@@ -2,7 +2,7 @@
 ```
  ./mvnw clean package -DskipTests=true
 
-# Run aside garden-runc
+# Run aside garden-runc (ex. on concourse's worker vm)
 java -jar /tmp/garden-exporter-0.0.1-SNAPSHOT.jar
 ```
 
@@ -41,3 +41,22 @@ memoryStats_numBytesAllocated_count 1.9688536E7
 ContainerCreationDuration_nanos 4.27993064E8
 ```
 
+# Tips 
+
+Install java on the concourse worker with bosh
+
+```yaml
+- type: replace
+  path: /releases/-
+  value:
+    name: openjdk
+    version: 0.1.1
+    url: https://github.com/making/openjdk-boshrelease/releases/download/0.1.1/openjdk-boshrelease-0.1.1.tgz
+    sha1: 06e397150e924755421d21452bd8d42e4f4bed60
+
+- type: replace
+  path: /instance_groups/name=worker/jobs/-
+  value:
+    name: java
+    release: openjdk
+```
